@@ -1,0 +1,13 @@
+@{    
+    Layout = "_Layout";
+    ViewData["Title"] = "Guild Reports";
+}
+
+
+<h2>@ViewData["Title"]</h2>
+
+
+@foreach (var report in Model.GuildReports)
+{
+    <p>@report.Title</p>
+}
