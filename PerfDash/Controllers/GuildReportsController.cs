@@ -14,8 +14,9 @@ namespace PerfDash.Controllers
         public async Task<IActionResult> Index()
         {
             WarcraftlogsServices wlogs = new WarcraftlogsServices();
-            
-            long start = DateTimeOffset.UtcNow.AddMonths(-1).ToUnixTimeMilliseconds();
+
+            //long start = DateTimeOffset.UtcNow.AddMonths(-1).ToUnixTimeMilliseconds();
+            long start = new DateTimeOffset(new DateTime(2017, 3, 28, 0, 0, 0, DateTimeKind.Utc)).ToUnixTimeMilliseconds(); // patch 7.2
             List<GuildReportModel> reports = await wlogs.GetGuildReports("Silverblade", "Frostmane", "EU", start);
             
             return View(new GuildReportsModel { GuildReports = reports });

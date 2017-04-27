@@ -53,5 +53,39 @@ namespace PerfDash.Services
 
             return reports;
         }
+
+        public async Task<List<FightsReportModel>> GetFightsReport()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets an array of CharacterRanking objects. Each CharacterRanking corresponds to a single rank on a fight for the specified character.
+        /// </summary>
+        /// <param name="characterName">The name of the character to collect rankings for.</param>
+        /// <param name="serverName">The server that the character is found on. For World of Warcraft this is the 'slug' field returned from their realm status API.</param>
+        /// <param name="serverRegion">The short region name for the server on which the character is located: US, EU, KR, TW, CN.</param>
+        /// <param name="metric">The metric to query for. Valid character metrics are 'dps', 'hps', 'bossdps, 'tankhps', or 'playerspeed'. 
+        /// For WoW only, 'krsi' can be used for tank survivability ranks.</param>
+        /// <returns></returns>
+        public async Task<List<CharacterRankingModel>> GetCharacterRankings(string characterName, string serverName, string serverRegion, string metric = "dps")
+        {
+            List<CharacterRankingModel> rankings = null;
+
+            string relativeUri = string.Format("/v1/rankings/character/{0}/{1}/{2}", characterName, serverName, serverRegion);
+            UriBuilder requestUri = new UriBuilder(new Uri(client.BaseAddress, relativeUri));
+
+            // Set query parameters.
+            requestUri.Query = string.Format("api_key={0}&metric={1}", apiKey, metric);
+
+            HttpResponseMessage response = await client.GetAsync(requestUri.Uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseData = await response.Content.ReadAsStringAsync();
+                rankings = JsonConvert.DeserializeObject<List<CharacterRankingModel>>(responseData);
+            }
+
+            return rankings;
+        }
     }
 }
