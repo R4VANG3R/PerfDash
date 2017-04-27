@@ -14,7 +14,9 @@ namespace PerfDash.Controllers
         public async Task<IActionResult> Index()
         {
             WarcraftlogsServices wlogs = new WarcraftlogsServices();
-            List<GuildReportModel> reports = await wlogs.GetGuildReports("Silverblade", "Frostmane", "EU");
+            
+            long start = DateTimeOffset.UtcNow.AddMonths(-1).ToUnixTimeMilliseconds();
+            List<GuildReportModel> reports = await wlogs.GetGuildReports("Silverblade", "Frostmane", "EU", start);
             
             return View(new GuildReportsModel { GuildReports = reports });
         }

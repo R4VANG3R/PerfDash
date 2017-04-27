@@ -6,8 +6,28 @@
 
 <h2>@ViewData["Title"]</h2>
 
-
-@foreach (var report in Model.GuildReports)
-{
-    <p>@report.Title</p>
-}
+<table class="table table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>owner</th>
+            <th>zoneid</th>
+            <th>starttime</th>
+            <th>endtime</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.GuildReports)
+        {
+            <tr>
+                <td>@report.Id</td>
+                <td>@report.Title</td>
+                <td>@report.Owner</td>
+                <td>@report.Zone</td>
+                <td>@report.Start</td>
+                <td>@report.End</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -31,13 +31,18 @@ namespace PerfDash.Services
         /// <param name="start">An optional start time. This is a UNIX timestamp but with millisecond precision. If omitted, 0 is assumed.</param>
         /// <param name="end">An optional end time. This is a UNIX timestamp but with millisecond precision. If omitted, the current time is assumed.</param>
         /// <returns></returns>
-        public async Task<List<GuildReportModel>> GetGuildReports(string guildName, string serverName, string serverRegion, int start = -1, int end = -1)
+        public async Task<List<GuildReportModel>> GetGuildReports(string guildName, string serverName, string serverRegion, long start = -1, long end = -1)
         {
             List<GuildReportModel> reports = null; 
             string relativeUri = string.Format("/v1/reports/guild/{0}/{1}/{2}", guildName, serverName, serverRegion);
 
             UriBuilder requestUri = new UriBuilder(new Uri(client.BaseAddress, relativeUri));
+
             requestUri.Query = string.Format("api_key={0}", apiKey);
+            if (start > -1)
+                requestUri.Query += string.Format("&start={0}", start);
+            if (end > -1)
+                requestUri.Query += string.Format("&end={0}", end);
 
             HttpResponseMessage response = await client.GetAsync(requestUri.Uri);
             if (response.IsSuccessStatusCode)

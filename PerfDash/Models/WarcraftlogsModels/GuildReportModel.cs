@@ -24,11 +24,9 @@ namespace PerfDash.Models.WarcraftlogsModels
         public int Zone;
 
         [Required]
-        [Timestamp]
-        public int StartTime;
+        public long Start;
 
         [Required]
-        [Timestamp]
-        public int EndTime;
+        public long End;
     }
 }
